@@ -5,5 +5,5 @@ from django.http.response import JsonResponse
 
 def current_datetime(request,id):
     now = datetime.datetime.now()
-    html = "<html><body>It is now %s.</body></html>" % id
+    html = {"id":id}
     return JsonResponse(html)
