@@ -13,10 +13,23 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from re import search
 from django.contrib import admin
 from django.urls import path
+from Backend.server_api.views import createGroup
 from views import *
 urlpatterns = [
     #path('admin/', admin.site.urls),
-    path('api/<str:id>/',api)
+    path('api/<str:group-id>/',api),
+    path('api/create/<str:group-id>',createGroup),
+    path('api/deviceCreate/<str:group-id>',createDevice),
+    path('api/deviceAdd/<str:group-id>',recent),
+    path('api/recent/<str:group-id>',recent),
+    path('api/recentImages/<str:group-id>',recentImages),
+    path('api/recentDocuments/<str:group-id>',recentDocuments),
+    path('api/recentNotes/<str:group-id>',recentNotes),
+    path('api/search/<str:group-id>',search),
+    path('api/search/<str:group-id>',search),
+    
+
 ]
