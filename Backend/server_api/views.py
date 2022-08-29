@@ -150,10 +150,10 @@ def createDevice(request,username):
                 deviceID="DEV_ID_"+int32_to_id(idr)
                 deviceKey=uuid.uuid4()
                 infojson={
-                    'deviceInfo':{'key': deviceKey,
+                    'deviceInfo':['key': deviceKey,
                     'MAC': str(request.POST.get('mac')),
                     'OS' : str(request.POST.get('os')),
-                    'User':str(username)}
+                    'User':str(username)]
                 }
                 try:
                     pipe.set(deviceID,infojson)
