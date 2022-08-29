@@ -26,7 +26,7 @@ def int32_to_id(n):
   return result
 
 #-------------Always Returns 200 OK code(To Check if WebServer is Up)----------
-def api(request,groupid):
+def api(request):
     r = redis.Redis(host='redis-18366.c305.ap-south-1-1.ec2.cloud.redislabs.com', port=18366, username='default', password=str(os.environ['PASSWORD']), decode_responses=True)
     #r.ping()    
     #client = pymongo.MongoClient("mongodb+srv://user12:{}@cluster0.iattu0o.mongodb.net/?retryWrites=true&w=majority".format(os.environ['MONGO_PASSWORD']), )#server_api=ServerApi('1'))
@@ -50,33 +50,47 @@ def createGroup(request,username):
             #now = datetime.datetime.now()
             deviceID = request.GET.get('id')
             deviceKey = request.GET.get('key')
-            print(deviceID,deviceKey)
+            # print(deviceID,deviceKey)
             if json.loads(r.get(deviceID))["deviceInfo"][0]["key"]==deviceKey:
                 deviceList = {'deviceID':[request.GET.get('id')]}   
                 #Create groupid as a unique digit and return it
-                groupid="S-"+str(r.incr("totalGroups"))
+                groupid="S-"+str(int32_to_id(r.incr("totalGroups")))
                 pipe.set(groupid,json.dumps(deviceList))
                 pipe.execute()
                 jsonb = {"group-id":groupid}
                 returnResponse =  JsonResponse(json.dumps(jsonb),safe=False)
             return returnResponse
     else:
-        z
-        print('Error Not GET Req')
+        return HttpResponse(content='Error Not GET Req')
 
 #----------Add Device to the Ecosystem of Devices-----------------
 def deviceAdd(request,groupid):
     r = redis.Redis(host='redis-18366.c305.ap-south-1-1.ec2.cloud.redislabs.com', port=18366, username='default', password=str(os.environ['PASSWORD']), decode_responses=True)
-    r.ping()    
+    #r.ping() 
     #client = pymongo.MongoClient("mongodb+srv://user12:{}@cluster0.iattu0o.mongodb.net/?retryWrites=true&w=majority".format(os.environ['MONGO_PASSWORD']), )#server_api=ServerApi('1'))
     #db = client.test
     pipe = r.pipeline()
-    pipe.set("a", "a value")
-    pipe.execute()
     if request.method == 'GET': 
-            now = datetime.datetime.now()
-            html = {"group-id":groupid}
-            return JsonResponse(html)
+            #now = datetime.datetime.now()
+            deviceID = request.GET.get('id')
+            deviceKey = request.GET.get('key')
+            # print(deviceID,deviceKey)
+            if json.loads(r.get(deviceID))["deviceInfo"][0]["key"]==deviceKey:
+                print(r.get(groupid))
+                newDeviceList = json.loads(r.get(deviceID))['deviceID']
+                print(newDeviceList)
+                jsonb={}
+                # deviceList = {'deviceID':[request.GET.get('id')]}   
+                # #Create groupid as a unique digit and return it
+                # groupid="S-"+str(int32_to_id(r.incr("totalGroups")))
+                # pipe.set(groupid,json.dumps(deviceList))
+                # pipe.execute()
+                # jsonb = {"group-id":groupid}
+                returnResponse =  JsonResponse(json.dumps(jsonb),safe=False)
+            return returnResponse
+    else:
+        return HttpResponse(content='Error Not GET Req')
+
 #----------Return Recent Files Across Ecosystem of devices-----------------
 def recent(request,groupid):
     r = redis.Redis(host='redis-18366.c305.ap-south-1-1.ec2.cloud.redislabs.com', port=18366, username='default', password=str(os.environ['PASSWORD']), decode_responses=True)
