@@ -21,14 +21,14 @@ urlpatterns = [
     #path('admin/', admin.site.urls),
     path('api/<str:groupid>/',api),
     path('api/create/<str:groupid>',createGroup),
-    path('api/deviceCreate/<str:groupid>',createDevice),
+    path('api/deviceCreate/<str:mac>',createDevice),
     path('api/deviceAdd/<str:groupid>',recent),
     path('api/recent/<str:groupid>',recent),
     path('api/recentImages/<str:groupid>',recentImages),
     path('api/recentDocuments/<str:groupid>',recentDocuments),
     path('api/recentNotes/<str:groupid>',recentNotes),
     path('api/search/<str:groupid>',search),
-    path('api/search/<str:groupid>',search),
+    #path('api/search/<str:groupid>',search),
     
 
 ]

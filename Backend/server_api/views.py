@@ -2,12 +2,14 @@ from django.http import HttpResponse
 import datetime
 import redis
 import pymongo
-from django.http.response import HttpResponseBadRequest, JsonResponse
+from django.http.response import HttpResponseBadRequest, HttpResponseServerError, JsonResponse
 import os
 def initialize():
     r = redis.Redis(host='redis-18366.c305.ap-south-1-1.ec2.cloud.redislabs.com', port=18366, username='default', password=str(os.environ['PASSWORD']), decode_responses=True)
-    pipe.set("totalKeys","0")
-    pipe.execute()
+    r.set("totalDevices",0)
+    r.set("totalGroups",0)
+
+    #pipe.execute()
 
 def int32_to_id(n):
   if n==0: return "0"
@@ -133,16 +135,47 @@ def search(request,groupid):
             html = {"group-id":groupid}
             return JsonResponse(html)
 #----------Return Result of Search Query-----------------
-def createDevice(request,groupid):
-    r = redis.Redis(host='redis-18366.c305.ap-south-1-1.ec2.cloud.redislabs.com', port=18366, username='default', password=str(os.environ['PASSWORD']), decode_responses=True)
-    r.ping()    
-    #client = pymongo.MongoClient("mongodb+srv://user12:{}@cluster0.iattu0o.mongodb.net/?retryWrites=true&w=majority".format(os.environ['MONGO_PASSWORD']), )#server_api=ServerApi('1'))
-    #db = client.test
-    pipe = r.pipeline()
-    pipe.set("a", "a value")
-    pipe.execute()
-    if request.method == 'GET': 
-            now = datetime.datetime.now()
-            html = {"group-id":groupid}
-            return JsonResponse(html)
+def createDevice(request,username):    
+    if request.method == 'POST': 
+        try:
+            if is_valid_mac(request.get('mac')):
+                r = redis.Redis(host='redis-18366.c305.ap-south-1-1.ec2.cloud.redislabs.com', port=18366, username='default', password=str(os.environ['PASSWORD']), decode_responses=True)
+                idr=int(r.incr('totalDevices'))
+                #r.ping() 
+                #client = pymongo.MongoClient("mongodb+srv://user12:{}@cluster0.iattu0o.mongodb.net/?retryWrites=true&w=majority".format(os.environ['MONGO_PASSWORD']), )#server_api=ServerApi('1'))
+                #db = client.test
+                pipe = r.pipeline()
+                now = datetime.datetime.now()
+                deviceID="DEV_ID_"+int32_to_id(idr)
+                deviceKey=uuid.uuid4()
+                infojson={
+                    'key': deviceKey,
+                    'MAC': request.get('mac'),
+                    'OS' : request.get('os'),
+                }
+                try:
+                    pipe.set(deviceID,infojson)
+                    pipe.execute()
+                    returnResponse =  JsonResponse(json)
+                finally:
+                    returnResponse = HttpResponseBadRequest()
+                return returnResponse
+            else:
+                return HttpResponseBadRequest()
+        finally:
+            return HttpResponseServerError()
+    else:
+        return HttpResponseBadRequest()
 
+import re
+import uuid
+def is_valid_mac(str):
+#regural expression
+  regex = ("^([0-9A-Fa-f]{2}[:-])" +"{5}([0-9A-Fa-f]{2})|" +"([0-9a-fA-F]{4}\\." +"[0-9a-fA-F]{4}\\." +"[0-9a-fA-F]{4})$")
+  match = re.compile(regex)
+  if (str == None):
+    return False
+  if(re.search(match, str)):
+    return True
+  else:
+    return False
