@@ -161,9 +161,9 @@ def createDevice(request,username):
                 returnResponse =  JsonResponse(json.dumps(infojson),safe=False)
                 return returnResponse
             else:
-                return HttpResponseBadRequest(content=username+str(2))
+                return HttpResponseServerError()
     else:
-        return HttpResponseBadRequest(content=username)
+        return HttpResponseBadRequest()
 
 import re
 import uuid
