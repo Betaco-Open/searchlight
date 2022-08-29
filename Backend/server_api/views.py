@@ -136,6 +136,7 @@ def search(request,groupid):
             html = {"group-id":groupid}
             return JsonResponse(html)
 #----------Return Result of Search Query-----------------
+@csrf_exempt 
 def createDevice(request,username):    
     if request.method == 'POST': 
         try:
