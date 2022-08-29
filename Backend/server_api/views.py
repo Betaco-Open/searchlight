@@ -22,7 +22,7 @@ def int32_to_id(n):
   return result
 
 #-------------Always Returns 200 OK code(To Check if WebServer is Up)----------
-def api(request,gid):
+def api(request,groupid):
     r = redis.Redis(host='redis-18366.c305.ap-south-1-1.ec2.cloud.redislabs.com', port=18366, username='default', password=str(os.environ['PASSWORD']), decode_responses=True)
     #r.ping()    
     #client = pymongo.MongoClient("mongodb+srv://user12:{}@cluster0.iattu0o.mongodb.net/?retryWrites=true&w=majority".format(os.environ['MONGO_PASSWORD']), )#server_api=ServerApi('1'))
@@ -35,7 +35,7 @@ def api(request,gid):
             returnResponse = "API is Working"
             return HttpResponse(returnResponse)
 #----------Create Ecosystem of Devices(On Main Device)-----------------
-def createGroup(request,gid):
+def createGroup(request,groupid):
     r = redis.Redis(host='redis-18366.c305.ap-south-1-1.ec2.cloud.redislabs.com', port=18366, username='default', password=str(os.environ['PASSWORD']), decode_responses=True)
     #r.ping() 
     #client = pymongo.MongoClient("mongodb+srv://user12:{}@cluster0.iattu0o.mongodb.net/?retryWrites=true&w=majority".format(os.environ['MONGO_PASSWORD']), )#server_api=ServerApi('1'))
@@ -44,18 +44,18 @@ def createGroup(request,gid):
     if request.method == 'GET': 
             now = datetime.datetime.now()
             deviceList = {'deviceID':[request.get('key')]}   
-            #Create gid as a unique digit and return it
+            #Create groupid as a unique digit and return it
             try:
-                pipe.set(gid,deviceList)
+                pipe.set(groupid,deviceList)
                 pipe.execute()
-                json = {"group-id":gid}
+                json = {"group-id":groupid}
                 returnResponse =  JsonResponse(json)
             finally:
                 returnResponse = HttpResponseBadRequest()
             return returnResponse
 
 #----------Add Device to the Ecosystem of Devices-----------------
-def deviceAdd(request,gid):
+def deviceAdd(request,groupid):
     r = redis.Redis(host='redis-18366.c305.ap-south-1-1.ec2.cloud.redislabs.com', port=18366, username='default', password=str(os.environ['PASSWORD']), decode_responses=True)
     r.ping()    
     #client = pymongo.MongoClient("mongodb+srv://user12:{}@cluster0.iattu0o.mongodb.net/?retryWrites=true&w=majority".format(os.environ['MONGO_PASSWORD']), )#server_api=ServerApi('1'))
@@ -65,10 +65,10 @@ def deviceAdd(request,gid):
     pipe.execute()
     if request.method == 'GET': 
             now = datetime.datetime.now()
-            html = {"group-id":gid}
+            html = {"group-id":groupid}
             return JsonResponse(html)
 #----------Return Recent Files Across Ecosystem of devices-----------------
-def recent(request,gid):
+def recent(request,groupid):
     r = redis.Redis(host='redis-18366.c305.ap-south-1-1.ec2.cloud.redislabs.com', port=18366, username='default', password=str(os.environ['PASSWORD']), decode_responses=True)
     r.ping()    
     #client = pymongo.MongoClient("mongodb+srv://user12:{}@cluster0.iattu0o.mongodb.net/?retryWrites=true&w=majority".format(os.environ['MONGO_PASSWORD']), )#server_api=ServerApi('1'))
@@ -78,10 +78,10 @@ def recent(request,gid):
     pipe.execute()
     if request.method == 'GET': 
             now = datetime.datetime.now()
-            html = {"group-id":gid}
+            html = {"group-id":groupid}
             return JsonResponse(html)
 #----------Return Recent Images  across deviceList-----------------
-def recentImages(request,gid):
+def recentImages(request,groupid):
     r = redis.Redis(host='redis-18366.c305.ap-south-1-1.ec2.cloud.redislabs.com', port=18366, username='default', password=str(os.environ['PASSWORD']), decode_responses=True)
     r.ping()    
     #client = pymongo.MongoClient("mongodb+srv://user12:{}@cluster0.iattu0o.mongodb.net/?retryWrites=true&w=majority".format(os.environ['MONGO_PASSWORD']), )#server_api=ServerApi('1'))
@@ -91,10 +91,10 @@ def recentImages(request,gid):
     pipe.execute()
     if request.method == 'GET': 
             now = datetime.datetime.now()
-            html = {"group-id":gid}
+            html = {"group-id":groupid}
             return JsonResponse(html)
 #----------Return Recent Documents  across deviceList-----------------
-def recentDocuments(request,gid):
+def recentDocuments(request,groupid):
     r = redis.Redis(host='redis-18366.c305.ap-south-1-1.ec2.cloud.redislabs.com', port=18366, username='default', password=str(os.environ['PASSWORD']), decode_responses=True)
     r.ping()    
     #client = pymongo.MongoClient("mongodb+srv://user12:{}@cluster0.iattu0o.mongodb.net/?retryWrites=true&w=majority".format(os.environ['MONGO_PASSWORD']), )#server_api=ServerApi('1'))
@@ -104,10 +104,10 @@ def recentDocuments(request,gid):
     pipe.execute()
     if request.method == 'GET': 
             now = datetime.datetime.now()
-            html = {"group-id":gid}
+            html = {"group-id":groupid}
             return JsonResponse(html)
 #----------Return Recent Notes across deviceList-----------------
-def recentNotes(request,gid):
+def recentNotes(request,groupid):
     r = redis.Redis(host='redis-18366.c305.ap-south-1-1.ec2.cloud.redislabs.com', port=18366, username='default', password=str(os.environ['PASSWORD']), decode_responses=True)
     r.ping()    
     #client = pymongo.MongoClient("mongodb+srv://user12:{}@cluster0.iattu0o.mongodb.net/?retryWrites=true&w=majority".format(os.environ['MONGO_PASSWORD']), )#server_api=ServerApi('1'))
@@ -117,10 +117,10 @@ def recentNotes(request,gid):
     pipe.execute()
     if request.method == 'GET': 
             now = datetime.datetime.now()
-            html = {"group-id":gid}
+            html = {"group-id":groupid}
             return JsonResponse(html)
 #----------Return Result of Search Query-----------------
-def search(request,gid):
+def search(request,groupid):
     r = redis.Redis(host='redis-18366.c305.ap-south-1-1.ec2.cloud.redislabs.com', port=18366, username='default', password=str(os.environ['PASSWORD']), decode_responses=True)
     r.ping()    
     #client = pymongo.MongoClient("mongodb+srv://user12:{}@cluster0.iattu0o.mongodb.net/?retryWrites=true&w=majority".format(os.environ['MONGO_PASSWORD']), )#server_api=ServerApi('1'))
@@ -130,10 +130,10 @@ def search(request,gid):
     pipe.execute()
     if request.method == 'GET': 
             now = datetime.datetime.now()
-            html = {"group-id":gid}
+            html = {"group-id":groupid}
             return JsonResponse(html)
 #----------Return Result of Search Query-----------------
-def createDevice(request,gid):
+def createDevice(request,groupid):
     r = redis.Redis(host='redis-18366.c305.ap-south-1-1.ec2.cloud.redislabs.com', port=18366, username='default', password=str(os.environ['PASSWORD']), decode_responses=True)
     r.ping()    
     #client = pymongo.MongoClient("mongodb+srv://user12:{}@cluster0.iattu0o.mongodb.net/?retryWrites=true&w=majority".format(os.environ['MONGO_PASSWORD']), )#server_api=ServerApi('1'))
@@ -143,6 +143,6 @@ def createDevice(request,gid):
     pipe.execute()
     if request.method == 'GET': 
             now = datetime.datetime.now()
-            html = {"group-id":gid}
+            html = {"group-id":groupid}
             return JsonResponse(html)
 
