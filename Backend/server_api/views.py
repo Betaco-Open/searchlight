@@ -1,3 +1,4 @@
+from this import d
 from django.http import HttpResponse
 import datetime
 import redis
@@ -80,8 +81,9 @@ def deviceAdd(request,groupid):
             # print(deviceID,deviceKey)
             if json.loads(r.get(deviceID))["deviceInfo"][0]["key"]==deviceKey:
                 print(r.get(groupid))
-                newDeviceList = r.get(deviceID)
-                print(dict(newDeviceList))
+                newDeviceList = r.get(groupid)
+                
+                print((json.loads(newDeviceList)['deviceID']))
                 jsonb={}
                 # deviceList = {'deviceID':[request.GET.get('id')]}   
                 # #Create groupid as a unique digit and return it
