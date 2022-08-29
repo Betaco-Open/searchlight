@@ -55,7 +55,7 @@ def createGroup(request,username):
                 deviceList = {'deviceID':[request.GET.get('id')]}   
                 #Create groupid as a unique digit and return it
                 groupid="S-"+str(r.incr("totalGroups"))
-                pipe.set(groupid,json.loads(deviceList))
+                pipe.set(groupid,json.dumps(deviceList))
                 pipe.execute()
                 jsonb = {"group-id":groupid}
                 returnResponse =  JsonResponse(json.dumps(jsonb))
