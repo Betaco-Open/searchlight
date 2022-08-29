@@ -139,7 +139,6 @@ def search(request,groupid):
 @csrf_exempt 
 def createDevice(request,username):    
     if request.method == 'POST': 
-        try:
             if is_valid_mac(request.get('mac')):
                 r = redis.Redis(host='redis-18366.c305.ap-south-1-1.ec2.cloud.redislabs.com', port=18366, username='default', password=str(os.environ['PASSWORD']), decode_responses=True)
                 idr=int(r.incr('totalDevices'))
@@ -165,8 +164,6 @@ def createDevice(request,username):
                 return returnResponse
             else:
                 return HttpResponseBadRequest(content=username+str(2))
-        finally:
-            return HttpResponseServerError(content=username+str(1))
     else:
         return HttpResponseBadRequest(content=username)
 
