@@ -5,6 +5,7 @@ import pymongo
 from django.http.response import HttpResponseBadRequest, HttpResponseServerError, JsonResponse
 import os
 from django.views.decorators.csrf import csrf_exempt
+import json
 def initialize():
     r = redis.Redis(host='redis-18366.c305.ap-south-1-1.ec2.cloud.redislabs.com', port=18366, username='default', password=str(os.environ['PASSWORD']), decode_responses=True)
     r.set("totalDevices",0)
@@ -155,6 +156,7 @@ def createDevice(request,username):
                     'OS' : str(request.POST.get('os')),
                     'User':str(username)}]
                 }
+                print(infojson,json.dumps(infojson))
                 try:
                     pipe.set(deviceID,infojson)
                     pipe.execute()
