@@ -58,7 +58,7 @@ def createGroup(request,username):
                 pipe.set(groupid,json.dumps(deviceList))
                 pipe.execute()
                 jsonb = {"group-id":groupid}
-                returnResponse =  JsonResponse(json.dump(jsonb))
+                returnResponse =  JsonResponse(json.dumps(jsonb))
             return returnResponse
     else:
         z
