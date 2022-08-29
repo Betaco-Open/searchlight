@@ -158,12 +158,7 @@ def createDevice(request,username):
                 }
                 pipe.set(deviceID,json.dumps(infojson))
                 pipe.execute()
-                try:
-                    pipe.set(deviceID,json.dumps(infojson))
-                    pipe.execute()
-                    returnResponse =  JsonResponse(json.dumps(infojson),safe=False)
-                finally:
-                    returnResponse = HttpResponseBadRequest(content=username+str(3))
+                returnResponse =  JsonResponse(json.dumps(infojson),safe=False)
                 return returnResponse
             else:
                 return HttpResponseBadRequest(content=username+str(2))
