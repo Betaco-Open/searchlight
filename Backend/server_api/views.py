@@ -47,16 +47,19 @@ def createGroup(request,randomInt):
     pipe = r.pipeline()
     if request.method == 'GET': 
             #now = datetime.datetime.now()
-            deviceList = {'deviceID':[request.GET.get('key')]}   
-            #Create groupid as a unique digit and return it
-            groupid="S"+str(int32_to_id(randomInt))
-            try:
-                pipe.set(groupid,deviceList)
-                pipe.execute()
-                jsonb = {"group-id":groupid}
-                returnResponse =  JsonResponse(json.dumps(jsonb))
-            finally:
-                returnResponse = HttpResponseBadRequest()
+            deviceID = request.GET.get('id')
+            deviceKey = request.GET.get('key')
+            if json.loads(r.get(deviceID))["deviceInfo"][0]["key"]==deviceKey:
+                deviceList = {'deviceID':[request.GET.get('id')]}   
+                #Create groupid as a unique digit and return it
+                groupid="S-"+str(int32_to_id(randomInt))
+                try:
+                    pipe.set(groupid,deviceList)
+                    pipe.execute()
+                    jsonb = {"group-id":groupid}
+                    returnResponse =  JsonResponse(json.dumps(jsonb))
+                finally:
+                    returnResponse = HttpResponseBadRequest()
             return returnResponse
 
 #----------Add Device to the Ecosystem of Devices-----------------
