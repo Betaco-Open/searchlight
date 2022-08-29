@@ -149,7 +149,7 @@ def createDevice(request,username):
                 pipe = r.pipeline()
                 now = datetime.datetime.now()
                 deviceID="DEV_ID_"+int32_to_id(idr)
-                deviceKey=uuid.uuid4()
+                deviceKey=str(uuid.uuid4())
                 infojson={
                     'deviceInfo':[{'key': deviceKey,
                     'MAC': str(request.POST.get('mac')),
