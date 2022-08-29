@@ -39,6 +39,7 @@ def api(request,groupid):
             returnResponse = "API is Working"
             return HttpResponse(returnResponse)
 #----------Create Ecosystem of Devices(On Main Device)-----------------
+@csrf_exempt
 def createGroup(request,username):
     r = redis.Redis(host='redis-18366.c305.ap-south-1-1.ec2.cloud.redislabs.com', port=18366, username='default', password=str(os.environ['PASSWORD']), decode_responses=True)
     #r.ping() 
@@ -49,6 +50,7 @@ def createGroup(request,username):
             #now = datetime.datetime.now()
             deviceID = request.GET.get('id')
             deviceKey = request.GET.get('key')
+            print(deviceID,deviceKey)
             if json.loads(r.get(deviceID))["deviceInfo"][0]["key"]==deviceKey:
                 deviceList = {'deviceID':[request.GET.get('id')]}   
                 #Create groupid as a unique digit and return it
