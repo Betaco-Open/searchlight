@@ -58,9 +58,10 @@ def createGroup(request,username):
                 pipe.set(groupid,json.dumps(deviceList,safe=False))
                 pipe.execute()
                 jsonb = {"group-id":groupid}
-                returnResponse =  JsonResponse(json.dumps(jsonb,safe=False))
+                returnResponse =  JsonResponse(json.dumps(jsonb))
             return returnResponse
     else:
+        z
         print('Error Not GET Req')
 
 #----------Add Device to the Ecosystem of Devices-----------------
