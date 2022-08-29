@@ -81,7 +81,7 @@ def deviceAdd(request,groupid):
             if json.loads(r.get(deviceID))["deviceInfo"][0]["key"]==deviceKey:
                 print(r.get(groupid))
                 newDeviceList = json.dumps(r.get(deviceID))
-                print(newDeviceList["deviceID"])
+                print(newDeviceList[0])
                 jsonb={}
                 # deviceList = {'deviceID':[request.GET.get('id')]}   
                 # #Create groupid as a unique digit and return it
