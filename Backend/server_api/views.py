@@ -48,8 +48,8 @@ def createGroup(request,username):
     pipe = r.pipeline()
     if request.method == 'GET': 
             #now = datetime.datetime.now()
-            deviceID = request.get('id')
-            deviceKey = request.get('key')
+            deviceID = request.GET.get('id')
+            deviceKey = request.GET.get('key')
             print(deviceID,deviceKey)
             if json.loads(r.get(deviceID))["deviceInfo"][0]["key"]==deviceKey:
                 deviceList = {'deviceID':[request.GET.get('id')]}   
@@ -63,6 +63,8 @@ def createGroup(request,username):
                 finally:
                     returnResponse = HttpResponseBadRequest()
             return returnResponse
+    else:
+        print('Error Not GET Req')
 
 #----------Add Device to the Ecosystem of Devices-----------------
 def deviceAdd(request,groupid):
