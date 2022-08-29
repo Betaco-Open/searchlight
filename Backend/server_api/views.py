@@ -132,3 +132,17 @@ def search(request,gid):
             now = datetime.datetime.now()
             html = {"group-id":gid}
             return JsonResponse(html)
+#----------Return Result of Search Query-----------------
+def createDevice(request,gid):
+    r = redis.Redis(host='redis-18366.c305.ap-south-1-1.ec2.cloud.redislabs.com', port=18366, username='default', password=str(os.environ['PASSWORD']), decode_responses=True)
+    r.ping()    
+    #client = pymongo.MongoClient("mongodb+srv://user12:{}@cluster0.iattu0o.mongodb.net/?retryWrites=true&w=majority".format(os.environ['MONGO_PASSWORD']), )#server_api=ServerApi('1'))
+    #db = client.test
+    pipe = r.pipeline()
+    pipe.set("a", "a value")
+    pipe.execute()
+    if request.method == 'GET': 
+            now = datetime.datetime.now()
+            html = {"group-id":gid}
+            return JsonResponse(html)
+
