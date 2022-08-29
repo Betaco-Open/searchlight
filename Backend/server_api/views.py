@@ -54,14 +54,11 @@ def createGroup(request,username):
             if json.loads(r.get(deviceID))["deviceInfo"][0]["key"]==deviceKey:
                 deviceList = {'deviceID':[request.GET.get('id')]}   
                 #Create groupid as a unique digit and return it
-                groupid="S-"+r.incr("totalGroups")
-                try:
-                    pipe.set(groupid,deviceList)
-                    pipe.execute()
-                    jsonb = {"group-id":groupid}
-                    returnResponse =  JsonResponse(json.dumps(jsonb))
-                finally:
-                    returnResponse = HttpResponseBadRequest()
+                groupid="S-"+str(r.incr("totalGroups"))
+                pipe.set(groupid,deviceList)
+                pipe.execute()
+                jsonb = {"group-id":groupid}
+                returnResponse =  JsonResponse(json.dumps(jsonb))
             return returnResponse
     else:
         print('Error Not GET Req')
