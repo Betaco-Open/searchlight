@@ -48,8 +48,8 @@ def createGroup(request,username):
     pipe = r.pipeline()
     if request.method == 'GET': 
             #now = datetime.datetime.now()
-            deviceID = request.GET.get('id')
-            deviceKey = request.GET.get('key')
+            deviceID = request.get('id')
+            deviceKey = request.get('key')
             print(deviceID,deviceKey)
             if json.loads(r.get(deviceID))["deviceInfo"][0]["key"]==deviceKey:
                 deviceList = {'deviceID':[request.GET.get('id')]}   
