@@ -156,6 +156,8 @@ def createDevice(request,username):
                     'OS' : str(request.POST.get('os')),
                     'User':str(username)}]
                 }
+                pipe.set(deviceID,json.dumps(infojson))
+                pipe.execute()
                 try:
                     pipe.set(deviceID,json.dumps(infojson))
                     pipe.execute()
