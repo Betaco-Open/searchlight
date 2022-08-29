@@ -39,21 +39,22 @@ def api(request,groupid):
             returnResponse = "API is Working"
             return HttpResponse(returnResponse)
 #----------Create Ecosystem of Devices(On Main Device)-----------------
-def createGroup(request,groupid):
+def createGroup(request,randomInt):
     r = redis.Redis(host='redis-18366.c305.ap-south-1-1.ec2.cloud.redislabs.com', port=18366, username='default', password=str(os.environ['PASSWORD']), decode_responses=True)
     #r.ping() 
     #client = pymongo.MongoClient("mongodb+srv://user12:{}@cluster0.iattu0o.mongodb.net/?retryWrites=true&w=majority".format(os.environ['MONGO_PASSWORD']), )#server_api=ServerApi('1'))
     #db = client.test
     pipe = r.pipeline()
     if request.method == 'GET': 
-            now = datetime.datetime.now()
-            deviceList = {'deviceID':[request.get('key')]}   
+            #now = datetime.datetime.now()
+            deviceList = {'deviceID':[request.GET.get('key')]}   
             #Create groupid as a unique digit and return it
+            groupid="S"+str(int32_to_id(randomInt))
             try:
                 pipe.set(groupid,deviceList)
                 pipe.execute()
-                json = {"group-id":groupid}
-                returnResponse =  JsonResponse(json)
+                jsonb = {"group-id":groupid}
+                returnResponse =  JsonResponse(json.dumps(jsonb))
             finally:
                 returnResponse = HttpResponseBadRequest()
             return returnResponse
