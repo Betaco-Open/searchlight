@@ -156,9 +156,8 @@ def createDevice(request,username):
                     'OS' : str(request.POST.get('os')),
                     'User':str(username)}]
                 }
-                print(infojson,json.dumps(infojson))
                 try:
-                    pipe.set(deviceID,infojson)
+                    pipe.set(deviceID,json.dumps(infojson))
                     pipe.execute()
                     returnResponse =  JsonResponse(infojson)
                 finally:
