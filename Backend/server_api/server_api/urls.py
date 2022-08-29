@@ -16,7 +16,6 @@ Including another URLconf
 from re import search
 from django.contrib import admin
 from django.urls import path
-from Backend.server_api.views import createGroup
 from views import *
 urlpatterns = [
     #path('admin/', admin.site.urls),
