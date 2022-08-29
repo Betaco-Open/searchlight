@@ -139,7 +139,7 @@ def search(request,groupid):
 @csrf_exempt 
 def createDevice(request,username):    
     if request.method == 'POST': 
-            if is_valid_mac(request.get('mac')):
+            if is_valid_mac(request.post('mac')):
                 r = redis.Redis(host='redis-18366.c305.ap-south-1-1.ec2.cloud.redislabs.com', port=18366, username='default', password=str(os.environ['PASSWORD']), decode_responses=True)
                 idr=int(r.incr('totalDevices'))
                 #r.ping() 
@@ -151,8 +151,8 @@ def createDevice(request,username):
                 deviceKey=uuid.uuid4()
                 infojson={
                     'deviceInfo':{'key': deviceKey,
-                    'MAC': str(request.get('mac')),
-                    'OS' : str(request.get('os')),
+                    'MAC': str(request.post('mac')),
+                    'OS' : str(request.post('os')),
                     'User':str(username)}
                 }
                 try:
