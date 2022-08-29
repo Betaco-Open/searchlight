@@ -153,8 +153,8 @@ def createDevice(request,username):
                     'deviceInfo':[{'key': deviceKey,
                     'MAC': str(request.POST.get('mac')),
                     'OS' : str(request.POST.get('os')),
-                    'User':str(username)}
-                }]
+                    'User':str(username)}]
+                }
                 try:
                     pipe.set(deviceID,infojson)
                     pipe.execute()
