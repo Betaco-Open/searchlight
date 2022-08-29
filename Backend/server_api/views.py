@@ -10,7 +10,7 @@ def initialize():
     r.set("totalGroups",0)
 
     #pipe.execute()
-
+initialize()
 def int32_to_id(n):
   if n==0: return "0"
   chars="0123456789ACEFHJKLMNPRTUVWXY"
@@ -149,14 +149,15 @@ def createDevice(request,username):
                 deviceID="DEV_ID_"+int32_to_id(idr)
                 deviceKey=uuid.uuid4()
                 infojson={
-                    'key': deviceKey,
-                    'MAC': request.get('mac'),
-                    'OS' : request.get('os'),
+                    'deviceInfo':{'key': deviceKey,
+                    'MAC': str(request.get('mac')),
+                    'OS' : str(request.get('os')),
+                    'User':str(username)}
                 }
                 try:
                     pipe.set(deviceID,infojson)
                     pipe.execute()
-                    returnResponse =  JsonResponse(json)
+                    returnResponse =  JsonResponse(infojson)
                 finally:
                     returnResponse = HttpResponseBadRequest()
                 return returnResponse
