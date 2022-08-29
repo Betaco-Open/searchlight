@@ -107,7 +107,7 @@ def recentDocuments(request,gid):
             html = {"group-id":gid}
             return JsonResponse(html)
 #----------Return Recent Notes across deviceList-----------------
-def returnNotes(request,gid):
+def recentNotes(request,gid):
     r = redis.Redis(host='redis-18366.c305.ap-south-1-1.ec2.cloud.redislabs.com', port=18366, username='default', password=str(os.environ['PASSWORD']), decode_responses=True)
     r.ping()    
     #client = pymongo.MongoClient("mongodb+srv://user12:{}@cluster0.iattu0o.mongodb.net/?retryWrites=true&w=majority".format(os.environ['MONGO_PASSWORD']), )#server_api=ServerApi('1'))
