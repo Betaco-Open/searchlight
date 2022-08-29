@@ -53,7 +53,7 @@ def createGroup(request,username):
             deviceKey = request.GET.get('key')
             # print(deviceID,deviceKey)
             if json.loads(r.get(deviceID))["deviceInfo"][0]["key"]==deviceKey:
-                deviceList = {'deviceID':[request.GET.get('id')]}   
+                deviceList = {"deviceID":[request.GET.get('id')]}   
                 #Create groupid as a unique digit and return it
                 groupid="S-"+str(int32_to_id(r.incr("totalGroups")))
                 pipe.set(groupid,json.dumps(deviceList))
@@ -81,7 +81,7 @@ def deviceAdd(request,groupid):
             if json.loads(r.get(deviceID))["deviceInfo"][0]["key"]==deviceKey:
                 print(r.get(groupid))
                 newDeviceList = json.loads(r.get(deviceID))
-                print(newDeviceList)
+                print(newDeviceList['deviceID'])
                 jsonb={}
                 # deviceList = {'deviceID':[request.GET.get('id')]}   
                 # #Create groupid as a unique digit and return it
