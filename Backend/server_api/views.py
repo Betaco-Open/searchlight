@@ -47,6 +47,7 @@ def createGroup(request,username):
     #db = client.test
     pipe = r.pipeline()
     if request.method == 'GET': 
+        try:
             #now = datetime.datetime.now()
             deviceID = request.GET.get('id')
             deviceKey = request.GET.get('key')
@@ -60,6 +61,8 @@ def createGroup(request,username):
                 jsonb = {"group-id":groupid}
                 returnResponse =  JsonResponse(json.dumps(jsonb),safe=False)
             return returnResponse
+        finally:
+            return HttpResponseBadRequest()
     else:
         return HttpResponse(content='Error Not GET Req')
 
@@ -77,7 +80,7 @@ def deviceAdd(request,groupid):
             # print(deviceID,deviceKey)
             if json.loads(r.get(deviceID))["deviceInfo"][0]["key"]==deviceKey:
                 print(r.get(groupid))
-                newDeviceList = json.loads(r.get(deviceID))['deviceID']
+                newDeviceList = json.loads(r.get(deviceID))["deviceID"]
                 print(newDeviceList)
                 jsonb={}
                 # deviceList = {'deviceID':[request.GET.get('id')]}   
