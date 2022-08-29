@@ -19,16 +19,16 @@ from django.urls import path
 from views import *
 urlpatterns = [
     #path('admin/', admin.site.urls),
-    path('api/<str:group-id>/',api),
-    path('api/create/<str:group-id>',createGroup),
-    path('api/deviceCreate/<str:group-id>',createDevice),
-    path('api/deviceAdd/<str:group-id>',recent),
-    path('api/recent/<str:group-id>',recent),
-    path('api/recentImages/<str:group-id>',recentImages),
-    path('api/recentDocuments/<str:group-id>',recentDocuments),
-    path('api/recentNotes/<str:group-id>',recentNotes),
-    path('api/search/<str:group-id>',search),
-    path('api/search/<str:group-id>',search),
+    path('api/<str:groupid>/',api),
+    path('api/create/<str:groupid>',createGroup),
+    path('api/deviceCreate/<str:groupid>',createDevice),
+    path('api/deviceAdd/<str:groupid>',recent),
+    path('api/recent/<str:groupid>',recent),
+    path('api/recentImages/<str:groupid>',recentImages),
+    path('api/recentDocuments/<str:groupid>',recentDocuments),
+    path('api/recentNotes/<str:groupid>',recentNotes),
+    path('api/search/<str:groupid>',search),
+    path('api/search/<str:groupid>',search),
     
 
 ]
