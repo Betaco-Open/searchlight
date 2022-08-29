@@ -22,7 +22,7 @@ urlpatterns = [
     path('api/<str:groupid>/',api),
     path('api/create/<str:groupid>',createGroup),
     path('api/deviceCreate/<str:username>',createDevice),
-    path('api/deviceAdd/<str:groupid>',recent),
+    path('api/deviceAdd/<str:groupid>',deviceAdd),
     path('api/recent/<str:groupid>',recent),
     path('api/recentImages/<str:groupid>',recentImages),
     path('api/recentDocuments/<str:groupid>',recentDocuments),

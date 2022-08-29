@@ -10,7 +10,7 @@ def initialize():
     r.set("totalGroups",0)
 
     #pipe.execute()
-initialize()
+#initialize()
 def int32_to_id(n):
   if n==0: return "0"
   chars="0123456789ACEFHJKLMNPRTUVWXY"
@@ -159,14 +159,14 @@ def createDevice(request,username):
                     pipe.execute()
                     returnResponse =  JsonResponse(infojson)
                 finally:
-                    returnResponse = HttpResponseBadRequest()
+                    returnResponse = HttpResponseBadRequest(content=username+str(3))
                 return returnResponse
             else:
-                return HttpResponseBadRequest()
+                return HttpResponseBadRequest(content=username+str(2))
         finally:
-            return HttpResponseServerError()
+            return HttpResponseServerError(content=username+str(1))
     else:
-        return HttpResponseBadRequest()
+        return HttpResponseBadRequest(content=username)
 
 import re
 import uuid
