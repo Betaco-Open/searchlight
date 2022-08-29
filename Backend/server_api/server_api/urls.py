@@ -20,7 +20,7 @@ from views import *
 urlpatterns = [
     #path('admin/', admin.site.urls),
     path('api/<str:groupid>/',api),
-    path('api/create/<int:randomInt>',createGroup),
+    path('api/create/<str:username>',createGroup),
     path('api/deviceCreate/<str:username>',createDevice),
     path('api/deviceAdd/<str:groupid>',deviceAdd),
     path('api/recent/<str:groupid>',recent),
