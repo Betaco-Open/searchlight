@@ -80,16 +80,15 @@ def deviceAdd(request,groupid):
             deviceKey = request.GET.get('key')
             # print(deviceID,deviceKey)
             if json.loads(r.get(deviceID))["deviceInfo"][0]["key"]==deviceKey:
-                print(r.get(groupid))
-                newDeviceList = r.get(groupid)
-                
-                print((json.loads(newDeviceList)['deviceID']))
-                jsonb={}
-                # deviceList = {'deviceID':[request.GET.get('id')]}   
-                # #Create groupid as a unique digit and return it
-                # groupid="S-"+str(int32_to_id(r.incr("totalGroups")))
-                # pipe.set(groupid,json.dumps(deviceList))
-                # pipe.execute()
+                #print(r.get(groupid))
+                newDeviceList = json.loads(r.get(groupid))['deviceID']
+                newDeviceList.append(deviceID)
+                #print((json.loads(newDeviceList)['deviceID']))
+                jsonb={"deviceList":newDeviceList}
+                deviceList = {'deviceID':newDeviceList}   
+                #Create groupid as a unique digit and return it
+                pipe.set(groupid,json.dumps(deviceList))
+                pipe.execute()
                 # jsonb = {"group-id":groupid}
                 returnResponse =  JsonResponse(json.dumps(jsonb),safe=False)
             return returnResponse
