@@ -40,7 +40,6 @@ def api(request):
             returnResponse = "API is Working"
             return HttpResponse(returnResponse)
 #----------Create Ecosystem of Devices(On Main Device)-----------------
-@csrf_exempt
 def createGroup(request,username):
     r = redis.Redis(host='redis-18366.c305.ap-south-1-1.ec2.cloud.redislabs.com', port=18366, username='default', password=str(os.environ['PASSWORD']), decode_responses=True)
     #r.ping() 
@@ -68,6 +67,7 @@ def createGroup(request,username):
         return HttpResponse(content='Error Not GET Req')
 
 #----------Add Device to the Ecosystem of Devices-----------------
+
 def deviceAdd(request,groupid):
     r = redis.Redis(host='redis-18366.c305.ap-south-1-1.ec2.cloud.redislabs.com', port=18366, username='default', password=str(os.environ['PASSWORD']), decode_responses=True)
     #r.ping() 
