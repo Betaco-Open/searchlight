@@ -1,3 +1,4 @@
+//import 'dart:html';
 import 'dart:io';
 //import 'dart:ui';
 import 'package:flutter/foundation.dart';
@@ -11,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:flutter_window_close/flutter_window_close.dart' as fwc;
+import 'package:window_manager/window_manager.dart';
+
 //import 'bg.dart';
 int index = 1;
 int _currentIndex = 0;
@@ -39,7 +42,18 @@ await hotKeyManager.register(
   //} ,
   //----------------------------------
 );
-
+HotKey _hotKey2 = HotKey(
+  KeyCode.escape,
+  //modifiers: [],
+  //-------- Set hotkey scope (default is HotKeyScope.system)--------
+  scope: HotKeyScope.system, //------- Set as inapp-wide hotkey-------
+);
+await hotKeyManager.register(
+  _hotKey2,
+  keyDownHandler: (hotKey) {
+        appWindow.hide();
+  }
+  );
   await Window.initialize();
   await Window.setEffect(
   effect: WindowEffect.aero,
@@ -98,13 +112,15 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with WindowListener{
   int _counter = 0;
    var _alertShowing = false;
   var _index = 0;
 
   @override
   void initState() {
+    windowManager.addListener(this);
+
     super.initState();
     
     
@@ -135,6 +151,20 @@ class _MyHomePageState extends State<MyHomePage> {
       _counter++;
     });
   }
+
+  // @override
+  // void onWindowFocus() {
+  //   // do something when app gets into focus state
+  //   print('gained focus');
+  // }
+
+  // @override
+  // void onWindowBlur() {
+  //   // do something when app gets into inactive/blur state
+  //   //print('lost focus');
+  //   appWindow.hide();
+    
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -199,8 +229,8 @@ class _MyHomePageState extends State<MyHomePage> {
         appWindow.hide();
       }
     },
- child: RawKeyboardListener(focusNode:material.FocusNode(),onKey: (material.RawKeyEvent event) {
-         print('value');
+ child: RawKeyboardListener(focusNode:fluent_ui.FocusNode(),onKey: (event) {
+         print(event);
        },autofocus: true,child:fluent_ui.Column(mainAxisAlignment: fluent_ui.MainAxisAlignment.center,children:[ Expanded(flex:0,child:fluent_ui.Center(
         child:fluent_ui.Container(
 

@@ -11,6 +11,8 @@
 #include <flutter_platform_alert/flutter_platform_alert_plugin.h>
 #include <flutter_window_close/flutter_window_close_plugin.h>
 #include <hotkey_manager/hotkey_manager_plugin.h>
+#include <screen_retriever/screen_retriever_plugin.h>
+#include <window_manager/window_manager_plugin.h>
 
 void RegisterPlugins(flutter::PluginRegistry* registry) {
   BitsdojoWindowPluginRegisterWithRegistrar(
@@ -23,4 +25,8 @@ void RegisterPlugins(flutter::PluginRegistry* registry) {
       registry->GetRegistrarForPlugin("FlutterWindowClosePlugin"));
   HotkeyManagerPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("HotkeyManagerPlugin"));
+  ScreenRetrieverPluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("ScreenRetrieverPlugin"));
+  WindowManagerPluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("WindowManagerPlugin"));
 }
