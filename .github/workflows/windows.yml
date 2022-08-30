@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: CI Windows Build Zip
 
 # Controls when the workflow will run
 on:
@@ -26,3 +26,11 @@ jobs:
        run: flutter config --enable-windows-desktop
      - working-directory: ./Frontend/new_proj_flutter
        run: flutter build windows
+     - working-directory: ./Frontend/new_proj_flutter/build/windows/
+       run: tar.exe -a -c -f out.zip *.*
+     
+     - name: Upload a Build Artifact
+       uses: actions/upload-artifact@v3.1.0
+       with:
+        name: "*.zip"
+        path: ./Frontend/new_proj_flutter/build/windows/
