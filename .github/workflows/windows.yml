@@ -27,8 +27,8 @@ jobs:
      - working-directory: ./Frontend/new_proj_flutter
        run: flutter build windows
      - working-directory: ./Frontend/new_proj_flutter/build/windows/
-       run: tar.exe -a -c -f out.zip *.*
-     
+       run: Compress-Archive ./ build.zip
+       
      - name: Upload a Build Artifact
        uses: actions/upload-artifact@v3.1.0
        with:
