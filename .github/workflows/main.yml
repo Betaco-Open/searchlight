@@ -22,6 +22,7 @@ jobs:
      - uses: subosito/flutter-action@v2
        with:
          channel: 'stable'
-     - run: cd ./Frontend/new_proj_flutter
-     - run: flutter config --enable-windows-desktop
-     - run: flutter build windows
+     - working-directory: ./Frontend/new_proj_flutter
+       run: flutter config --enable-windows-desktop
+     - working-directory: ./Frontend/new_proj_flutter
+       run: flutter build windows
