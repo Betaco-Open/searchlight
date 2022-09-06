@@ -2,7 +2,7 @@
 ![searchlight_logo](https://user-images.githubusercontent.com/64083352/188547718-d7a3e9b6-a68c-473b-ac5f-b34badd99574.svg)
 
 
-Searchlight aims to synchronize file lists and add search capability throughout you ecosystem. 
+Searchlight helps you synchronize files across devices and add search capability throughout your entire ecosystem. 
 
 ## Why searchlight
 Ever wondered how you would get a file scanned through your mobile device in the critical instance of last minute submissions?
