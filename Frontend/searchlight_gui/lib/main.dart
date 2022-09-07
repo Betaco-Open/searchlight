@@ -293,11 +293,11 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener{
     ),
   ],
 )),
-  fluent_ui.Text('TEXT BUTTON'),
-  fluent_ui.Text('TEXT BUTTON'),
-  fluent_ui.Text('TEXT BUTTON'),
-  fluent_ui.Text('TEXT BUTTON'),
-  fluent_ui.Text('TEXT BUTTON')
+  fluent_ui.Text('Downloads'),
+  fluent_ui.Text('Documents'),
+  fluent_ui.Text('Pictures'),
+  fluent_ui.Text('Music'),
+  fluent_ui.Text('Videos')
 ,fluent_ui.BottomNavigation(
      index: index,
      onChanged: (i) => setState(() => index = i),
