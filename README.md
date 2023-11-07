@@ -25,7 +25,10 @@ Try it: <br>
 - Windows(x64) : [Download Here](https://github.com/Betaco-Open/searchlight/releases/download/v0.1.0/release.zip)  <br>
 
 Send your queries to : <br>
-searchlight@betaco.tech <br>
+
+[//]: <> (searchlight@betaco.tech <br>)
+
+labscloudnine@gmail.com
 ## How can you contribute?
 If you are a developer familiar with Python and Dart/Flutter development or Swift, Java and C#/.Net. You can contribute via code. Any improvements or features added via testing or developing are highly appreciated.
 If you face any issue / have a suggestion please raise request at [Issues](https://github.com/Betaco-Open/searchlight/issues) tab
