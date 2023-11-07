@@ -17,6 +17,10 @@ If you are a developer familiar with Python and Dart/Flutter development or Swif
 
 [//]: <> (Also, funding this project also will help it thrive longer.)
 
+Additional Features include:
+- Support for Alfred and Raycast Plugins
+- SDK for App Developers
+- Extensions Support in Python, Rust and JS
 
 
 
