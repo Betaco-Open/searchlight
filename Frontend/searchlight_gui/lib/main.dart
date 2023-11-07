@@ -13,8 +13,6 @@ import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:flutter_window_close/flutter_window_close.dart' as fwc;
 
 //import 'bg.dart';
-int index = 1;
-int _currentIndex = 0;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await hotKeyManager.unregisterAll();
@@ -28,8 +26,7 @@ void main() async {
     _hotKey,
     keyDownHandler: (hotKey) {
       if (appWindow.isVisible) {
-        //appWindow.hide();
-        print('Already Visible');
+        // print('Already Visible');
       } else {
         appWindow.show();
       }
@@ -98,40 +95,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  var _alertShowing = false;
-  var _index = 0;
+  var systemTempDir =
+      Directory(Platform.environment['USERPROFILE'].toString() + '/Downloads');
+
+  get contents =>
+      systemTempDir.listSync(recursive: true).map((e) => e.toString()).toList();
 
   @override
   void initState() {
     super.initState();
-
     FlutterWindowClose.setWindowShouldCloseHandler(() async {
       appWindow.hide();
       return false;
-    });
-  }
-
-  static const cursorState = SystemMouseCursors.click;
-  cursorF() {
-    appWindow.hide();
-    var duration = const Duration(seconds: 5);
-    print('Start sleeping');
-    sleep(duration);
-    print('5 seconds has passed');
-    appWindow.show();
-    const cursorState = SystemMouseCursors.grab;
-    return cursorState;
-  }
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
     });
   }
 
@@ -151,32 +126,10 @@ class _MyHomePageState extends State<MyHomePage> {
       body: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {
-          // your code
           print('tap');
         },
-        //------------------For Future Use -----------------------
-        //onDoubleTapDown:(details) {
-
-        //   //print(details.localPosition);
-        //   //Direction ;
-        //   const da =fluent_ui.Offset(477.0,273.0);
-        //   const db =fluent_ui.Offset(477.0,494.0);
-        //   const dx =fluent_ui.Offset(888.0,273.0);
-        //   const dy =fluent_ui.Offset(888.0,494.0);
-        //   bool insideRect(double x, double y) =>
-        //   x >= da.dx && x <= da.dx + 411 && y >= da.dy && y <= da.dy + 221;
-        //   bool br=insideRect(details.localPosition.dx, details.localPosition.dy);
-        //   if(br){
-        //     //print('inside object');
-        //   }else{
-        //     //print('outside object');
-        //     //print(_counter);
-        //     appWindow.show();
-        //   }
-        // },
-        // ---------------------------------------------------------------------------
         onTapUp: (details) {
-          print(details.localPosition);
+          // print(details.localPosition);
           //Direction ;
           const da = fluent_ui.Offset(446.0, 252.0);
           const dk = fluent_ui.Offset(477.0, 273.0);
@@ -203,7 +156,15 @@ class _MyHomePageState extends State<MyHomePage> {
         child: RawKeyboardListener(
             focusNode: material.FocusNode(),
             onKey: (material.RawKeyEvent event) {
-              print('value');
+              print(event.data.logicalKey.keyLabel);
+              if (event.data.isControlPressed) {
+                if (event.data.isShiftPressed) {
+                  if (event.data.logicalKey.keyLabel == 'N') {
+                    print('New Window');
+                    appWindow.hide();
+                  }
+                }
+              }
             },
             autofocus: true,
             child: fluent_ui.Column(
@@ -223,120 +184,37 @@ class _MyHomePageState extends State<MyHomePage> {
                                         leadingIcon: fluent_ui.Icon(
                                             fluent_ui.FluentIcons.search),
                                         placeholder: 'Search',
-                                        items: const [
-                                          'Chatilly-Tifanny',
-                                          'Chartreux',
-                                          'Chausie',
-                                          'Munchkin',
-                                          'York Chocolate',
-                                        ],
-                                        onChanged: (text, reason) {
-                                          print('$text');
+                                        items: contents,
+                                        onChanged: (text, reason) async {
+                                          var re = RegExp(
+                                              r"File: '(([A-Z]:)?[\.]?[\\{1,2}/]?.*[\\{1,2}/])*(.+)\.(.+)'");
+
+                                          if (re.hasMatch('$text')) {
+                                            String txt = text
+                                                .replaceFirst('File: ', '')
+                                                .replaceAll("'", "");
+                                            print(txt);
+                                            if (Platform.isLinux) {
+                                              await Process.run("xdg-open", [
+                                                txt,
+                                              ]);
+                                              appWindow.hide();
+                                            } else if (Platform.isWindows) {
+                                              appWindow.hide();
+                                              await Process.run(txt, [],
+                                                  runInShell: true);
+                                            }
+                                          } else {
+                                            print('No Match');
+                                          }
                                         },
                                         onSelected: (breed) {
-                                          print(breed);
+                                          // print(breed);
                                         },
                                       )))))),
-                  Expanded(
-                      flex: 0,
-                      child: fluent_ui.Container(
-                          child: fluent_ui.FractionallySizedBox(
-                              widthFactor: 0.30,
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                      color: fluent_ui.Colors.white,
-                                      border: Border.all(
-                                        color: fluent_ui.Colors.white,
-                                      ),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(5))),
-                                  child: fluent_ui.Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        PageHeader(
-                                            title: fluent_ui.Text(
-                                              'Recent',
-                                              textScaleFactor: 0.5,
-                                            ),
-                                            commandBar: DropDownButton(
-                                              leading: const Icon(
-                                                FluentIcons.sort,
-                                                size: 16.0,
-                                              ),
-                                              title: const Text(
-                                                'Sort By',
-                                                textScaleFactor: 0.7,
-                                              ),
-                                              items: [
-                                                MenuFlyoutItem(
-                                                  text: const Text('Last 24H'),
-                                                  leading: const Icon(
-                                                    FluentIcons.calendar_day,
-                                                    size: 16.0,
-                                                  ),
-                                                  onPressed: () =>
-                                                      debugPrint('left'),
-                                                ),
-                                                MenuFlyoutItem(
-                                                  text: const Text('Last Week'),
-                                                  leading: const Icon(
-                                                      FluentIcons
-                                                          .calendar_week),
-                                                  onPressed: () =>
-                                                      debugPrint('center'),
-                                                ),
-                                                MenuFlyoutItem(
-                                                  text:
-                                                      const Text('Last Month'),
-                                                  leading: const Icon(
-                                                      FluentIcons
-                                                          .calendar_year),
-                                                  onPressed: () =>
-                                                      debugPrint('right'),
-                                                ),
-                                              ],
-                                            )),
-                                        new GestureDetector(
-                                            onTap: () => debugPrint(
-                                                'option 1 addressed'),
-                                            child: fluent_ui.Text(
-                                                'Assignment.pdf')),
-                                        fluent_ui.Text(
-                                            '20BCE10373_Tutorial.pdf'),
-                                        fluent_ui.Text('New_Document.docx'),
-                                        fluent_ui.Text('TEXT BUTTON'),
-                                        fluent_ui.Text('TEXT BUTTON'),
-                                        fluent_ui.BottomNavigation(
-                                          index: index,
-                                          onChanged: (i) =>
-                                              setState(() => index = i),
-                                          items: const [
-                                            BottomNavigationItem(
-                                              icon:
-                                                  Icon(Icons.document_scanner),
-                                              selectedIcon:
-                                                  Icon(Icons.document_scanner),
-                                              title: Text('Docs'),
-                                            ),
-                                            BottomNavigationItem(
-                                              icon: Icon(Icons.image),
-                                              selectedIcon: Icon(Icons.image),
-                                              title: Text('Images'),
-                                            ),
-                                            BottomNavigationItem(
-                                              icon:
-                                                  Icon(Icons.note_alt_rounded),
-                                              selectedIcon:
-                                                  Icon(Icons.note_alt_outlined),
-                                              title: Text('Notes'),
-                                            ),
-                                          ],
-                                        )
-                                      ]))))),
                 ])),
       ),
-      extendBody: true,
+      extendBody: false,
     );
   }
 }
