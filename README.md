@@ -20,7 +20,7 @@ searchlight is the solution
 - Step 8: Now press `Alt+Z` and start Searchlight App
 ## What is current developent status?
 Currently, searchlight is at alpha - 0.01 state. But is being developed with love and precision. We hope to reach at a stable release soon. <br>
-Searchligh First Public Alpha Releaase is Out <br>
+Searchlight First Public Alpha Releaase is Out <br>
 Try it: <br>
 - Windows(x64) : [Download Here](https://github.com/Betaco-Open/searchlight/releases/download/v0.1.0/release.zip)  <br>
 
