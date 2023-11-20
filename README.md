@@ -28,7 +28,7 @@ Send your queries to : <br>
 
 [//]: <> (searchlight@betaco.tech <br>)
 
-labscloudnine@gmail.com
+support@betaco.tech
 ## How can you contribute?
 If you are a developer familiar with Python and Dart/Flutter development or Swift, Java and C#/.Net. You can contribute via code. Any improvements or features added via testing or developing are highly appreciated.
 If you face any issue / have a suggestion please raise request at [Issues](https://github.com/Betaco-Open/searchlight/issues) tab
