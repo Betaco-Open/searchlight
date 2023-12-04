@@ -32,6 +32,10 @@ void main() async {
         print('Already Visible');
       } else {
         appWindow.show();
+        // material.NextFocusAction();
+        //  NextFocusAction();
+
+        print('Not Visible');
       }
     },
     //----- Only works on macOS --------
@@ -42,15 +46,18 @@ void main() async {
   );
 
   await Window.initialize();
-  await Window.setEffect(
-    effect: WindowEffect.transparent,
-    //color: Color(0xCC222222),
-  );
-  //--------<>-------------
-  //Enable when in Production
-  //--------<>--------------
-  Window.enterFullscreen();
-  runApp(const MyApp());
+  if (Platform.isWindows) {
+    await Window.setEffect(
+      effect: WindowEffect.transparent,
+      //color: Color(0xCC222222),
+    );
+    //--------<>-------------
+    //Enable when in Production
+    //--------<>--------------
+    Window.enterFullscreen();
+  }
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -59,6 +66,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    // var systemTempDir = Directory('C:/Users/asus/');
+    // List contents = systemTempDir.listSync();
+    // // contents.forEach((element) {
+    // //   print(element.path);
+    // // });
+
+    // print(Platform.environment['USERPROFILE'].toString());
     return fluent_ui.FluentApp(
       title: 'Flutter Demo',
       theme: fluent_ui.ThemeData(
@@ -74,7 +88,7 @@ class MyApp extends StatelessWidget {
           accentColor: fluent_ui.Colors.blue,
           //works with ScaffoldPage
           scaffoldBackgroundColor: fluent_ui.Colors.transparent),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -101,24 +115,40 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   var _alertShowing = false;
   var _index = 0;
+  var systemTempDir =
+      Directory(Platform.environment['USERPROFILE'].toString() + '/Downloads');
+
+  get contents => systemTempDir
+      .listSync(recursive: true)
+      .map((e) => e.toString().replaceAll('/', '\\'))
+      .toList();
+
+  material.FocusNode focusNode = material.FocusNode();
+  get focusnode => focusNode;
 
   @override
   void initState() {
     super.initState();
-
+    // var systemTempDir = Directory('C:/Users/asus/');
+    // List contents = systemTempDir.listSync();
+    // contents.forEach((element) {
+    //   print(element.path);
+    // });
+    // print(Platform.environment['USERPROFILE'].toString());
     FlutterWindowClose.setWindowShouldCloseHandler(() async {
       appWindow.hide();
       return false;
     });
+    focusNode.requestFocus();
   }
 
   static const cursorState = SystemMouseCursors.click;
   cursorF() {
     appWindow.hide();
-    var duration = const Duration(seconds: 5);
-    print('Start sleeping');
-    sleep(duration);
-    print('5 seconds has passed');
+    // var duration = const Duration(seconds: 5);
+    // print('Start sleeping');
+    // sleep(duration);
+    // print('5 seconds has passed');
     appWindow.show();
     const cursorState = SystemMouseCursors.grab;
     return cursorState;
@@ -131,7 +161,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      _counter++;
+      // _counter++;
     });
   }
 
@@ -143,6 +173,8 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+    focusNode.requestFocus();
+
     return Scaffold(
       //------------- Base Layout Of App --------------
       backgroundColor: fluent_ui.Colors.transparent,
@@ -176,7 +208,12 @@ class _MyHomePageState extends State<MyHomePage> {
         // },
         // ---------------------------------------------------------------------------
         onTapUp: (details) {
-          print(details.localPosition);
+          // Process.run('python', ['-V']).then((ProcessResult pr) {
+          //   print(pr.exitCode);
+          //   print(pr.stdout);
+          //   print(pr.stderr);
+          // });
+          // print(details.localPosition);
           //Direction ;
           const da = fluent_ui.Offset(446.0, 252.0);
           const dk = fluent_ui.Offset(477.0, 273.0);
@@ -203,9 +240,16 @@ class _MyHomePageState extends State<MyHomePage> {
         child: RawKeyboardListener(
             focusNode: material.FocusNode(),
             onKey: (material.RawKeyEvent event) {
-              print('value');
+              print(event.data.logicalKey.keyLabel);
+              if (event.data.isControlPressed) {
+                if (event.data.isShiftPressed) {
+                  if (event.data.logicalKey.keyLabel == 'N') {
+                    print('New Window');
+                    appWindow.hide();
+                  }
+                }
+              }
             },
-            autofocus: true,
             child: fluent_ui.Column(
                 mainAxisAlignment: fluent_ui.MainAxisAlignment.center,
                 children: [
@@ -219,124 +263,149 @@ class _MyHomePageState extends State<MyHomePage> {
                                   child: fluent_ui.FractionallySizedBox(
                                       widthFactor: 0.30,
                                       //<For Coulmn/Row as super> mainAxisAlignment: fluent_ui.MainAxisAlignment.center,
-                                      child: fluent_ui.AutoSuggestBox(
-                                        leadingIcon: fluent_ui.Icon(
-                                            fluent_ui.FluentIcons.search),
-                                        placeholder: 'Search',
-                                        items: const [
-                                          'Chatilly-Tifanny',
-                                          'Chartreux',
-                                          'Chausie',
-                                          'Munchkin',
-                                          'York Chocolate',
-                                        ],
-                                        onChanged: (text, reason) {
-                                          print('$text');
-                                        },
-                                        onSelected: (breed) {
-                                          print(breed);
-                                        },
-                                      )))))),
-                  Expanded(
-                      flex: 0,
-                      child: fluent_ui.Container(
-                          child: fluent_ui.FractionallySizedBox(
-                              widthFactor: 0.30,
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                      color: fluent_ui.Colors.white,
-                                      border: Border.all(
-                                        color: fluent_ui.Colors.white,
-                                      ),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(5))),
-                                  child: fluent_ui.Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        PageHeader(
-                                            title: fluent_ui.Text(
-                                              'Recent',
-                                              textScaleFactor: 0.5,
-                                            ),
-                                            commandBar: DropDownButton(
-                                              leading: const Icon(
-                                                FluentIcons.sort,
-                                                size: 16.0,
-                                              ),
-                                              title: const Text(
-                                                'Sort By',
-                                                textScaleFactor: 0.7,
-                                              ),
-                                              items: [
-                                                MenuFlyoutItem(
-                                                  text: const Text('Last 24H'),
-                                                  leading: const Icon(
-                                                    FluentIcons.calendar_day,
-                                                    size: 16.0,
-                                                  ),
-                                                  onPressed: () =>
-                                                      debugPrint('left'),
-                                                ),
-                                                MenuFlyoutItem(
-                                                  text: const Text('Last Week'),
-                                                  leading: const Icon(
-                                                      FluentIcons
-                                                          .calendar_week),
-                                                  onPressed: () =>
-                                                      debugPrint('center'),
-                                                ),
-                                                MenuFlyoutItem(
-                                                  text:
-                                                      const Text('Last Month'),
-                                                  leading: const Icon(
-                                                      FluentIcons
-                                                          .calendar_year),
-                                                  onPressed: () =>
-                                                      debugPrint('right'),
-                                                ),
-                                              ],
-                                            )),
-                                        new GestureDetector(
-                                            onTap: () => debugPrint(
-                                                'option 1 addressed'),
-                                            child: fluent_ui.Text(
-                                                'Assignment.pdf')),
-                                        fluent_ui.Text(
-                                            '20BCE10373_Tutorial.pdf'),
-                                        fluent_ui.Text('New_Document.docx'),
-                                        fluent_ui.Text('TEXT BUTTON'),
-                                        fluent_ui.Text('TEXT BUTTON'),
-                                        fluent_ui.BottomNavigation(
-                                          index: index,
-                                          onChanged: (i) =>
-                                              setState(() => index = i),
-                                          items: const [
-                                            BottomNavigationItem(
-                                              icon:
-                                                  Icon(Icons.document_scanner),
-                                              selectedIcon:
-                                                  Icon(Icons.document_scanner),
-                                              title: Text('Docs'),
-                                            ),
-                                            BottomNavigationItem(
-                                              icon: Icon(Icons.image),
-                                              selectedIcon: Icon(Icons.image),
-                                              title: Text('Images'),
-                                            ),
-                                            BottomNavigationItem(
-                                              icon:
-                                                  Icon(Icons.note_alt_rounded),
-                                              selectedIcon:
-                                                  Icon(Icons.note_alt_outlined),
-                                              title: Text('Notes'),
-                                            ),
-                                          ],
-                                        )
-                                      ]))))),
+                                      child: Focus(
+                                          autofocus: true,
+                                          focusNode: focusNode,
+                                          canRequestFocus: true,
+                                          child: AutoSuggestBox(
+                                            leadingIcon: fluent_ui.Icon(
+                                                fluent_ui.FluentIcons.search),
+                                            placeholder: 'Search',
+                                            items: contents,
+                                            onChanged: (text, reason) async {
+                                              var re = RegExp(
+                                                  r"File: '(([A-Z]:)?[\.]?[\\{1,2}/]?.*[\\{1,2}/])*(.+)\.(.+)'");
+
+                                              if (re.hasMatch('$text')) {
+                                                String txt = text
+                                                    .replaceFirst('File: ', '')
+                                                    .replaceAll("'", "");
+                                                print(txt);
+                                                if (Platform.isLinux) {
+                                                  await Process.run(
+                                                      "xdg-open", [
+                                                    txt,
+                                                  ]);
+                                                  appWindow.hide();
+                                                } else if (Platform.isWindows) {
+                                                  appWindow.hide();
+                                                  await Process.run(txt, [],
+                                                      runInShell: true);
+                                                }
+                                              } else {
+                                                print('No Match');
+                                              }
+                                            },
+                                            onSelected: (breed) {
+                                              // print(breed);
+                                            },
+                                          ))))))),
+//  ---- dUMP OlD Code ----
+                  // Expanded(
+                  //     flex: 0,
+                  // child: fluent_ui.Container(
+                  //     child: fluent_ui.FractionallySizedBox(
+                  //         widthFactor: 0.30,
+                  //         child: Container(
+                  //             decoration: BoxDecoration(
+                  //                 color: fluent_ui.Colors.white,
+                  //                 border: Border.all(
+                  //                   color: fluent_ui.Colors.white,
+                  //                 ),
+                  //                 borderRadius:
+                  //                     BorderRadius.all(Radius.circular(5))),
+                  //             child: fluent_ui.Column(
+                  //                 mainAxisAlignment:
+                  //                     MainAxisAlignment.spaceBetween,
+                  //                 children: [
+                  //                   PageHeader(
+                  //                       title: fluent_ui.Text(
+                  //                         'Recent',
+                  //                         textScaleFactor: 0.5,
+                  //                       ),
+                  //                       commandBar: DropDownButton(
+                  //                         leading: const Icon(
+                  //                           FluentIcons.sort,
+                  //                           size: 16.0,
+                  //                         ),
+                  //                         title: const Text(
+                  //                           'Sort By',
+                  //                           textScaleFactor: 0.7,
+                  //                         ),
+                  //                         items: [
+                  //                           MenuFlyoutItem(
+                  //                             text: const Text('Last 24H'),
+                  //                             leading: const Icon(
+                  //                               FluentIcons.calendar_day,
+                  //                               size: 16.0,
+                  //                             ),
+                  //                             onPressed: () =>
+                  //                                 debugPrint('left'),
+                  //                           ),
+                  //                           MenuFlyoutItem(
+                  //                             text: const Text('Last Week'),
+                  //                             leading: const Icon(
+                  //                                 FluentIcons
+                  //                                     .calendar_week),
+                  //                             onPressed: () =>
+                  //                                 debugPrint('center'),
+                  //                           ),
+                  //                           MenuFlyoutItem(
+                  //                             text:
+                  //                                 const Text('Last Month'),
+                  //                             leading: const Icon(
+                  //                                 FluentIcons
+                  //                                     .calendar_year),
+                  //                             onPressed: () =>
+                  //                                 debugPrint('right'),
+                  //                           ),
+                  //                         ],
+                  //                       )),
+                  // new GestureDetector(
+                  //   onTap: () =>
+                  //       debugPrint('option 1 addressed'),
+                  //   // child:
+                  //   //  fluent_ui.Text(
+                  //   //     'Assignment.pdf')
+                  // ),
+                  // fluent_ui.Text(
+                  //     '20BCE10373_Tutorial.pdf'),
+                  // fluent_ui.Text('New_Document.docx'),
+                  // fluent_ui.Text('TEXT BUTTON'),
+                  //  fluent_ui.Text('TEXT BUTTON'),
+                  // fluent_ui.BottomNavigation(
+                  //   index: index,
+                  //   onChanged: (i) =>
+                  //       setState(() => index = i),
+                  //   items: const [
+                  //     BottomNavigationItem(
+                  //       icon:
+                  //           Icon(Icons.document_scanner),
+                  //       selectedIcon:
+                  //           Icon(Icons.document_scanner),
+                  //       title: Text('Docs'),
+                  //     ),
+                  //     BottomNavigationItem(
+                  //       icon: Icon(Icons.image),
+                  //       selectedIcon: Icon(Icons.image),
+                  //       title: Text('Images'),
+                  //     ),
+                  //     BottomNavigationItem(
+                  //       icon:
+                  //           Icon(Icons.note_alt_rounded),
+                  //       selectedIcon:
+                  //           Icon(Icons.note_alt_outlined),
+                  //       title: Text('Notes'),
+                  //     ),
+                  //   ],
+                  // )
+                  // ]))
+                  // ))
+                  // ),
+                  // ---- END-----
                 ])),
       ),
-      extendBody: true,
+      extendBody: false,
     );
   }
 }
