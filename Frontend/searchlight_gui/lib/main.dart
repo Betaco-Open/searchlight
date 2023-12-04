@@ -3,14 +3,14 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flutter_platform_alert/flutter_platform_alert.dart';
-import 'package:flutter_window_close/flutter_window_close.dart';
-import 'package:bitsdojo_window/bitsdojo_window.dart';
+// import 'package:flutter_window_close/flutter_window_close.dart';
+// import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fluent_ui;
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
-import 'package:flutter_window_close/flutter_window_close.dart' as fwc;
+// import 'package:flutter_window_close/flutter_window_close.dart' as fwc;
 
 //import 'bg.dart';
 void main() async {
@@ -25,11 +25,11 @@ void main() async {
   await hotKeyManager.register(
     _hotKey,
     keyDownHandler: (hotKey) {
-      if (appWindow.isVisible) {
-        // print('Already Visible');
-      } else {
-        appWindow.show();
-      }
+      // if (appWindow.isVisible) {
+      //   // print('Already Visible');
+      // } else {
+      //   appWindow.show();
+      // }
     },
     //----- Only works on macOS --------
     //keyUpHandler: (hotKey){
@@ -39,15 +39,18 @@ void main() async {
   );
 
   await Window.initialize();
-  await Window.setEffect(
-    effect: WindowEffect.transparent,
-    //color: Color(0xCC222222),
-  );
-  //--------<>-------------
-  //Enable when in Production
-  //--------<>--------------
-  Window.enterFullscreen();
+  if (Platform.isWindows) {
+    await Window.setEffect(
+      effect: WindowEffect.transparent,
+      //color: Color(0xCC222222),
+    );
+    //--------<>-------------
+    //Enable when in Production
+    //--------<>--------------
+    // Window.enterFullscreen();
+  }
   runApp(const MyApp());
+  // focus
 }
 
 class MyApp extends StatelessWidget {
@@ -100,14 +103,18 @@ class _MyHomePageState extends State<MyHomePage> {
 
   get contents =>
       systemTempDir.listSync(recursive: true).map((e) => e.toString()).toList();
+  final FocusNode _focusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    FlutterWindowClose.setWindowShouldCloseHandler(() async {
-      appWindow.hide();
-      return false;
-    });
+    WidgetsBinding.instance.addPostFrameCallback(
+        (_) => FocusScope.of(context).requestFocus(_focusNode));
+
+    // FlutterWindowClose.setWindowShouldCloseHandler(() async {
+    //   appWindow.hide();
+    //   return false;
+    // });
   }
 
   @override
@@ -123,98 +130,52 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: fluent_ui.Colors.transparent,
 
       //<Previous Code >bottomNavigationBar: ,
-      body: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () {
-          print('tap');
-        },
-        onTapUp: (details) {
-          // print(details.localPosition);
-          //Direction ;
-          const da = fluent_ui.Offset(446.0, 252.0);
-          const dk = fluent_ui.Offset(477.0, 273.0);
-          const db = fluent_ui.Offset(477.0, 494.0);
-          const dx = fluent_ui.Offset(888.0, 273.0);
-          const dy = fluent_ui.Offset(888.0, 494.0);
-          bool insideRect(double x, double y) =>
-              x >= da.dx && x <= da.dx + 387 && y >= da.dy && y <= da.dy + 211;
-          bool br =
-              insideRect(details.localPosition.dx, details.localPosition.dy);
-          if (br) {
-            //---<For Testing>-------
-            //print('inside object');
-            //---</>-------
+      body: fluent_ui.Column(
+          mainAxisAlignment: fluent_ui.MainAxisAlignment.center,
+          children: [
+            Expanded(
+                flex: 0,
+                child: fluent_ui.Center(
+                    child: fluent_ui.Container(
 
-          } else {
-            //---<For Testing>-------
-            //print('outside object');
-            //print(_counter);
-            //-----</>---------------
-            appWindow.hide();
-          }
-        },
-        child: RawKeyboardListener(
-            focusNode: material.FocusNode(),
-            onKey: (material.RawKeyEvent event) {
-              print(event.data.logicalKey.keyLabel);
-              if (event.data.isControlPressed) {
-                if (event.data.isShiftPressed) {
-                  if (event.data.logicalKey.keyLabel == 'N') {
-                    print('New Window');
-                    appWindow.hide();
-                  }
-                }
-              }
-            },
-            autofocus: true,
-            child: fluent_ui.Column(
-                mainAxisAlignment: fluent_ui.MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                      flex: 0,
-                      child: fluent_ui.Center(
-                          child: fluent_ui.Container(
+                        //<For Coulmn/Row as super> mainAxisAlignment: fluent_ui.MainAxisAlignment.center,
+                        child: fluent_ui.Center(
+                            child: fluent_ui.FractionallySizedBox(
+                                widthFactor: 0.30,
+                                //<For Coulmn/Row as super> mainAxisAlignment: fluent_ui.MainAxisAlignment.center,
+                                child: fluent_ui.AutoSuggestBox(
+                                  leadingIcon: fluent_ui.Icon(
+                                      fluent_ui.FluentIcons.search),
+                                  placeholder: 'Search',
+                                  items: contents,
+                                  onChanged: (text, reason) async {
+                                    var re = RegExp(
+                                        r"File: '(([A-Z]:)?[\.]?[\\{1,2}/]?.*[\\{1,2}/])*(.+)\.(.+)'");
 
-                              //<For Coulmn/Row as super> mainAxisAlignment: fluent_ui.MainAxisAlignment.center,
-                              child: fluent_ui.Center(
-                                  child: fluent_ui.FractionallySizedBox(
-                                      widthFactor: 0.30,
-                                      //<For Coulmn/Row as super> mainAxisAlignment: fluent_ui.MainAxisAlignment.center,
-                                      child: fluent_ui.AutoSuggestBox(
-                                        leadingIcon: fluent_ui.Icon(
-                                            fluent_ui.FluentIcons.search),
-                                        placeholder: 'Search',
-                                        items: contents,
-                                        onChanged: (text, reason) async {
-                                          var re = RegExp(
-                                              r"File: '(([A-Z]:)?[\.]?[\\{1,2}/]?.*[\\{1,2}/])*(.+)\.(.+)'");
-
-                                          if (re.hasMatch('$text')) {
-                                            String txt = text
-                                                .replaceFirst('File: ', '')
-                                                .replaceAll("'", "");
-                                            print(txt);
-                                            if (Platform.isLinux) {
-                                              await Process.run("xdg-open", [
-                                                txt,
-                                              ]);
-                                              appWindow.hide();
-                                            } else if (Platform.isWindows) {
-                                              appWindow.hide();
-                                              await Process.run(txt, [],
-                                                  runInShell: true);
-                                            }
-                                          } else {
-                                            print('No Match');
-                                          }
-                                        },
-                                        onSelected: (breed) {
-                                          // print(breed);
-                                        },
-                                      )))))),
-                ])),
-      ),
-      extendBody: false,
+                                    if (re.hasMatch('$text')) {
+                                      String txt = text
+                                          .replaceFirst('File: ', '')
+                                          .replaceAll("'", "");
+                                      print(txt);
+                                      if (Platform.isLinux) {
+                                        await Process.run("xdg-open", [
+                                          txt,
+                                        ]);
+                                        // appWindow.hide();
+                                      } else if (Platform.isWindows) {
+                                        // appWindow.hide();
+                                        await Process.run(txt, [],
+                                            runInShell: true);
+                                      }
+                                    } else {
+                                      print('No Match');
+                                    }
+                                  },
+                                  onSelected: (breed) {
+                                    // print(breed);
+                                  },
+                                )))))),
+          ]),
     );
   }
 }
