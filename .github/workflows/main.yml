@@ -13,11 +13,11 @@ jobs:
       with:
         flutter-version: '1.7.8+hotfix.4'
     - run: flutter pub get
-      working-directory: Frontend\searchlight_gui
+      working-directory: /Frontend/searchlight_gui/
     - run: flutter test
-      working-directory: Frontend\searchlight_gui
+      working-directory: /Frontend/searchlight_gui/
     - run: flutter build apk --debug --split-per-abi
-      working-directory: Frontend\searchlight_gui
+      working-directory: /Frontend/searchlight_gui/
     - name: Push APK to Releases
       uses: ncipollo/release-action@v1
       with:
