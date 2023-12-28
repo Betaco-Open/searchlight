@@ -35,6 +35,14 @@ If you face any issue / have a suggestion please raise request at [Issues](https
 
 [//]: <> (Also, funding this project also will help it thrive longer.)
 
+Features:
+- Synchronize Files across devices(Android,Linux,Windows,MacOS and FreeBSD)
+- Inbuilt Clipboard Manager
+- Use Any Android App from Linux,Windows,MacOS
+- Commands, Keywords and Keyboard Shortcuts
+
+  <br>
+  
 Additional Features include:
 - Support for Alfred and Raycast Plugins
 - SDK for App Developers
