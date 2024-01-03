@@ -21,7 +21,9 @@ jobs:
      - uses: actions/checkout@v3
      - uses: subosito/flutter-action@v2
        with:
+         flutter-version: '3.0.5'
          channel: 'stable'
+     - run: flutter --version
      - working-directory: ./Frontend/searchlight_gui
        run: flutter config --enable-windows-desktop
        
@@ -31,5 +33,5 @@ jobs:
      - name: Upload a Build Artifact
        uses: actions/upload-artifact@v3.1.0
        with:
-        name: "build.zip"
+        name: "build"
         path: ./Frontend/searchlight_gui/build/windows/
