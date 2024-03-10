@@ -4,12 +4,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flutter_platform_alert/flutter_platform_alert.dart';
 // import 'package:flutter_window_close/flutter_window_close.dart';
-// import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fluent_ui;
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
+import 'package:window_manager/window_manager.dart';
 // import 'package:flutter_window_close/flutter_window_close.dart' as fwc;
 
 //import 'bg.dart';
@@ -19,17 +20,21 @@ void main() async {
   HotKey _hotKey = HotKey(
     KeyCode.keyZ,
     modifiers: [KeyModifier.alt],
+
     //-------- Set hotkey scope (default is HotKeyScope.system)--------
-    //scope: HotKeyScope.inapp, //------- Set as inapp-wide hotkey-------
+    scope: HotKeyScope.inapp, //------- Set as inapp-wide hotkey-------
   );
   await hotKeyManager.register(
     _hotKey,
     keyDownHandler: (hotKey) {
-      // if (appWindow.isVisible) {
-      //   // print('Already Visible');
-      // } else {
-      //   appWindow.show();
-      // }
+    //--------<>-------------
+    //Enable when in Production
+    //--------<>--------------
+      if (appWindow.isVisible) {
+        exit(0);
+      } else {
+        appWindow.show();
+      }
     },
     //----- Only works on macOS --------
     //keyUpHandler: (hotKey){
@@ -47,7 +52,28 @@ void main() async {
     //--------<>-------------
     //Enable when in Production
     //--------<>--------------
+    Window.enterFullscreen();
+  }
+  if( Platform.isLinux){
+  WidgetsFlutterBinding.ensureInitialized();
+  // Must add this line.
+
+  await windowManager.ensureInitialized();
     // Window.enterFullscreen();
+
+  await windowManager.setTitleBarStyle(TitleBarStyle.hidden);
+  await windowManager.setAsFrameless();
+  await windowManager.maximize();
+  
+  
+  // windowManager.waitUntilReadyToShow(windowOptions, () async {
+  //   await windowManager.show();
+  //   await windowManager.focus();
+  // });    
+  //     windowManager.waitUntilReadyToShow().then((_) async{
+  //     await windowManager.setAsFrameless();
+  // });
+
   }
   runApp(const MyApp());
   // focus
@@ -106,7 +132,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   var systemTempDir =
-      Directory(Platform.environment['USERPROFILE'].toString() + '/Downloads');
+      Directory((Platform.environment['HOME'] ?? Platform.environment['USERPROFILE']).toString() + '/Downloads');
 
   get contents =>
       systemTempDir.listSync(recursive: true).map((e) => e.toString()).toList();
@@ -167,12 +193,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                           .replaceAll("'", "");
                                       print(txt);
                                       if (Platform.isLinux) {
+                                        appWindow.hide();
                                         await Process.run("xdg-open", [
                                           txt,
                                         ]);
-                                        // appWindow.hide();
+                                        exit(0);;
+
                                       } else if (Platform.isWindows) {
-                                        // appWindow.hide();
+                                        appWindow.hide();
                                         await Process.run(txt, [],
                                             runInShell: true);
                                       }
