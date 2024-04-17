@@ -27,9 +27,9 @@ void main() async {
   await hotKeyManager.register(
     _hotKey,
     keyDownHandler: (hotKey) {
-      //--------<>-------------
-      //Enable when in Production
-      //--------<>--------------
+    //--------<>-------------
+    //Enable when in Production
+    //--------<>--------------
       if (appWindow.isVisible) {
         exit(0);
       } else {
@@ -54,24 +54,25 @@ void main() async {
     //--------<>--------------
     Window.enterFullscreen();
   }
-  if (Platform.isLinux) {
-    WidgetsFlutterBinding.ensureInitialized();
-    // Must add this line.
+  if( Platform.isLinux){
+  WidgetsFlutterBinding.ensureInitialized();
+  // Must add this line.
 
-    await windowManager.ensureInitialized();
+  await windowManager.ensureInitialized();
     // Window.enterFullscreen();
 
-    await windowManager.setTitleBarStyle(TitleBarStyle.hidden);
-    await windowManager.setAsFrameless();
-    await windowManager.maximize();
-
-    // windowManager.waitUntilReadyToShow(windowOptions, () async {
-    //   await windowManager.show();
-    //   await windowManager.focus();
-    // });
-    //     windowManager.waitUntilReadyToShow().then((_) async{
-    //     await windowManager.setAsFrameless();
-    // });
+  await windowManager.setTitleBarStyle(TitleBarStyle.hidden);
+  await windowManager.setAsFrameless();
+  await windowManager.maximize();
+  
+  
+  // windowManager.waitUntilReadyToShow(windowOptions, () async {
+  //   await windowManager.show();
+  //   await windowManager.focus();
+  // });    
+  //     windowManager.waitUntilReadyToShow().then((_) async{
+  //     await windowManager.setAsFrameless();
+  // });
 
   }
   runApp(const MyApp());
@@ -130,10 +131,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var systemTempDir = Directory(
-      (Platform.environment['HOME'] ?? Platform.environment['USERPROFILE'])
-              .toString() +
-          '/Downloads');
+  var systemTempDir =
+      Directory((Platform.environment['HOME'] ?? Platform.environment['USERPROFILE']).toString() + '/Downloads');
 
   get contents =>
       systemTempDir.listSync(recursive: true).map((e) => e.toString()).toList();
@@ -192,13 +191,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                       String txt = text
                                           .replaceFirst('File: ', '')
                                           .replaceAll("'", "");
-                                      // print(txt);
+                                      print(txt);
                                       if (Platform.isLinux) {
                                         appWindow.hide();
                                         await Process.run("xdg-open", [
                                           txt,
                                         ]);
-                                        exit(0);
+                                        exit(0);;
+
                                       } else if (Platform.isWindows) {
                                         appWindow.hide();
                                         await Process.run(txt, [],
