@@ -3,6 +3,7 @@
 
 Searchlight helps you synchronize files across devices and add search capability throughout your entire ecosystem. 
 
+
 ## Why searchlight
 Ever wondered how you would get a file scanned through your mobile device in the critical instance of last minute submissions?
 How you would send your very large file(approx. 10 GB) over to your workstation without having low transfer speed of Bluetooth<sup>TM</sup> protocol?
@@ -74,5 +75,10 @@ Additional Features include:
 - SDK for App Developers
 - Extensions Support in Python, Rust and JS
 
+## Roadmap and Update (Sep '24)
+Code in this repo was not updated for last 5 months and is built over flutter version 3.0.5
+I didnt have a mac to test and build, due to which the development was hampered severly. During the period I also realsed that a solution was necessary and there are many other problems with existing file solutions that need to be addressed.
+Hence, this project will be the first part of complete integration suite for various ecosystem of devices.
+From now on most probably weekly dev builds with features would be supported.
 
 
