@@ -74,6 +74,7 @@ Additional Features include:
 - Support for Alfred and Raycast Plugins
 - SDK for App Developers
 - Extensions Support in Python, Rust and JS
+- Ability to Sync with Spotlight and other OS native search tools
 
 ## Roadmap and Update (Sep '24)
 Code in this repo was not updated for last 5 months and is built over flutter version 3.0.5
