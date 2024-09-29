@@ -82,4 +82,18 @@ I didnt have a mac to test and build, due to which the development was hampered 
 Hence, this project will be the first part of complete integration suite for various ecosystem of devices.
 From now on most probably weekly dev builds with features would be supported.
 
+Roadmap (October '24)
+Integrate search with Google Drive/OneDrive/iCloud/MEGA/ProtonDrive/DoShare Personal Cloud
+Support Multi-Device Offline Sync with DoShare
+Multi App Sync and View Support across Mobile OS
+Compress and Transfer for Big Files
+More Interactive
+Inbuilt Clipboard Manager
+Commands, Keywords and Keyboard Shortcuts
+Auto Start on Boot
+Control Device Settings from inside the App
+Support for
+
+
+
 
