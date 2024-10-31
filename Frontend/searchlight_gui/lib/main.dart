@@ -9,39 +9,42 @@ import 'package:fluent_ui/fluent_ui.dart' as fluent_ui;
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
-import 'package:hotkey_manager/hotkey_manager.dart';
+// import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:macos_ui/macos_ui.dart' as macos_ui;
+
 // import 'package:flutter_window_close/flutter_window_close.dart' as fwc;
 
 //import 'bg.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await hotKeyManager.unregisterAll();
-  HotKey _hotKey = HotKey(
-    KeyCode.keyZ,
-    modifiers: [KeyModifier.alt],
+  // await hotKeyManager.unregisterAll();
+  // HotKey _hotKey = HotKey(
+  //   KeyCode.keyZ,
+  //   modifiers: [KeyModifier.alt],
 
-    //-------- Set hotkey scope (default is HotKeyScope.system)--------
-    scope: HotKeyScope.inapp, //------- Set as inapp-wide hotkey-------
-  );
-  await hotKeyManager.register(
-    _hotKey,
-    keyDownHandler: (hotKey) {
-    //--------<>-------------
-    //Enable when in Production
-    //--------<>--------------
-      if (appWindow.isVisible) {
-        exit(0);
-      } else {
-        appWindow.show();
-      }
-    },
+  //   //-------- Set hotkey scope (default is HotKeyScope.system)--------
+  //   scope: HotKeyScope.inapp, //------- Set as inapp-wide hotkey-------
+  // );
+  // await hotKeyManager.register(
+  //   _hotKey,
+  //   keyDownHandler: (hotKey) {
+  //   //--------<>-------------
+  //   //Enable when in Production
+  //   //--------<>--------------
+  //     if (appWindow.isVisible) {
+  //       exit(0);
+  //     } else {
+  //       appWindow.show();
+  //     }
+  //   },
     //----- Only works on macOS --------
     //keyUpHandler: (hotKey){
     //print('onKeyUp+${hotKey.toJson()}');
     //} ,
     //----------------------------------
-  );
+  // );
 
   await Window.initialize();
   if (Platform.isWindows) {
@@ -64,16 +67,32 @@ void main() async {
   await windowManager.setTitleBarStyle(TitleBarStyle.hidden);
   await windowManager.setAsFrameless();
   await windowManager.maximize();
-  
-  
+
+
   // windowManager.waitUntilReadyToShow(windowOptions, () async {
   //   await windowManager.show();
   //   await windowManager.focus();
-  // });    
+  // });
   //     windowManager.waitUntilReadyToShow().then((_) async{
   //     await windowManager.setAsFrameless();
   // });
 
+  }
+  if(Platform.isMacOS){
+    print('Build Type: MacOS');
+    // final Directory tempDir = await getTemporaryDirectory();
+
+    // final Directory appDocumentsDir = await getApplicationDocumentsDirectory();
+
+    final Directory? downloadsDir = await getDownloadsDirectory();
+    var normalTempDir = Directory('./Downloads');
+
+    // List<String>? contents = downloadsDir?.listSync(recursive: false).map((e) => e.toString()).toList();
+    // if(contents!=null){
+    // contents.forEach((element) {
+    //   print(element);
+    // });
+    // }
   }
   runApp(const MyApp());
   // focus
@@ -104,9 +123,10 @@ class MyApp extends StatelessWidget {
           // or simply save your changes to "hot reload" in a Flutter IDE).
           // Notice that the counter didn't reset back to zero; the application
           // is not restarted.
-          accentColor: fluent_ui.Colors.blue,
+          // accentColor: fluent_ui.Colors.blue,
           //works with ScaffoldPage
-          scaffoldBackgroundColor: fluent_ui.Colors.transparent),
+          // scaffoldBackgroundColor: fluent_ui.Colors.black
+      ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -131,16 +151,33 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var systemTempDir =
-      Directory((Platform.environment['HOME'] ?? Platform.environment['USERPROFILE']).toString() + '/Downloads');
+  Directory? systemTempDir = Directory('.');
+  // get contents =>
+  //     systemTempDir.listSync(recursive: false).map((e) => e.toString()).toList();
+      final FocusNode _focusNode = FocusNode();
+  // Directory? downloadsDir;
+//      Directory((Platform.environment['HOME'] ?? Platform.environment['USERPROFILE']).toString() + '/Downloads');
 
-  get contents =>
-      systemTempDir.listSync(recursive: true).map((e) => e.toString()).toList();
-  final FocusNode _focusNode = FocusNode();
+Future<void> _fetchData() async {
+
+ Directory? downloadsDir = await getDownloadsDirectory();
+ systemTempDir  = Directory('/Users/vednig/Downloads');
+  // List<String>? contents = downloadsDir?.listSync(recursive: true).map((e) => e.toString()).toList();
+  // if(contents!=null){
+  // contents.forEach((element) {
+  //   print(element);
+  // });
+  // }
+}
+
+// List<String>? contents = downloadsDir?.listSync(recursive: false).map((e) => e.toString()).toList();
+        get contents => systemTempDir?.listSync(recursive: false).map((e) => macos_ui.SearchResultItem(e.toString())).toList();
+
 
   @override
   void initState() {
     super.initState();
+    _fetchData();
     WidgetsBinding.instance.addPostFrameCallback(
         (_) => FocusScope.of(context).requestFocus(_focusNode));
 
@@ -162,7 +199,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       //------------- Base Layout Of App --------------
-      backgroundColor: fluent_ui.Colors.transparent,
+      backgroundColor:fluent_ui.Colors.black,
 
       //<Previous Code >bottomNavigationBar: ,
       body: fluent_ui.Column(
@@ -172,46 +209,73 @@ class _MyHomePageState extends State<MyHomePage> {
                 flex: 0,
                 child: fluent_ui.Center(
                     child: fluent_ui.Container(
+                      decoration: BoxDecoration(
+                              color: fluent_ui.Colors.black,
+                              borderRadius: BorderRadius.circular(4.0),
+                            ),
 
                         //<For Coulmn/Row as super> mainAxisAlignment: fluent_ui.MainAxisAlignment.center,
                         child: fluent_ui.Center(
-                            child: fluent_ui.FractionallySizedBox(
-                                widthFactor: 0.30,
+
+                            child:
                                 //<For Coulmn/Row as super> mainAxisAlignment: fluent_ui.MainAxisAlignment.center,
-                                child: fluent_ui.AutoSuggestBox(
-                                  leadingIcon: fluent_ui.Icon(
-                                      fluent_ui.FluentIcons.search),
+                                 macos_ui.MacosTheme(
+                                  // themeMode: ThemeMode.system, // or ThemeMode.light, ThemeMode.dark
+                                  data:macos_ui.MacosThemeData.light(),
+
+                                    child:macos_ui.MacosSearchField(
+
                                   placeholder: 'Search',
-                                  items: contents,
-                                  onChanged: (text, reason) async {
-                                    var re = RegExp(
-                                        r"File: '(([A-Z]:)?[\.]?[\\{1,2}/]?.*[\\{1,2}/])*(.+)\.(.+)'");
+                                  results: contents,
+                                  // onChanged: (text, reason) async {
+                                  //   print(reason);
+                                  //   var re = RegExp(
+                                  //       r"File: '(([A-Z]:)?[\.]?[\\{1,2}/]?.*[\\{1,2}/])*(.+)\.(.+)'");
+                                  //   // appWindow.hide();
+                                  // print("Opening $text");
+                                  //   await Process.run("open", [
+                                  //     "$text",
+                                  //   ]);
+                                  //   if (re.hasMatch('$text')) {
+                                  //     String txt = text
+                                  //         .replaceFirst('File: ', '')
+                                  //         .replaceAll("'", "");
+                                  //     print(txt);
+                                  //     if (Platform.isLinux) {
+                                  //       appWindow.hide();
+                                  //       await Process.run("xdg-open", [
+                                  //         txt,
+                                  //       ]);
+                                  //       exit(0);;
 
-                                    if (re.hasMatch('$text')) {
-                                      String txt = text
-                                          .replaceFirst('File: ', '')
-                                          .replaceAll("'", "");
-                                      print(txt);
-                                      if (Platform.isLinux) {
-                                        appWindow.hide();
-                                        await Process.run("xdg-open", [
-                                          txt,
-                                        ]);
-                                        exit(0);;
+                                  //     } else if (Platform.isWindows) {
+                                  //       appWindow.hide();
+                                  //       await Process.run(txt, [],
+                                  //           runInShell: true);
+                                  //     }
 
-                                      } else if (Platform.isWindows) {
-                                        appWindow.hide();
-                                        await Process.run(txt, [],
-                                            runInShell: true);
-                                      }
-                                    } else {
-                                      print('No Match');
-                                    }
+                                  //   } else {
+                                  //     print('No Match');
+                                  //   }
+
+
+                                  // },
+                                  // onSelected: (String selection) {
+                                  //               debugPrint('$selection selected');
+                                  //             },
+                                  onResultSelected: (resultItem) {
+                                    debugPrint(resultItem.searchKey);
                                   },
-                                  onSelected: (breed) {
-                                    // print(breed);
-                                  },
-                                )))))),
+
+
+                                )
+
+                            )
+                        )
+
+                    )
+                )
+            ),
           ]),
     );
   }
