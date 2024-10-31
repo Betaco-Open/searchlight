@@ -1,7 +1,7 @@
 ![searchlight_logo](https://user-images.githubusercontent.com/64083352/188547718-d7a3e9b6-a68c-473b-ac5f-b34badd99574.svg)
 
 
-Searchlight helps you synchronize files across devices and add search capability throughout your entire ecosystem. 
+Searchlight helps you synchronize files across devices and add search capability throughout your entire ecosystem.
 
 
 ## Why searchlight
@@ -13,8 +13,8 @@ searchlight is the solution
 <details>
 <summary>Windows</summary>
 <br>
-  
-- Step 1: Download the installation [zip](https://github.com/Betaco-Open/searchlight/releases/download/v0.1.0/release.zip) 
+
+- Step 1: Download the installation [zip](https://github.com/Betaco-Open/searchlight/releases/download/v0.1.0/release.zip)
 - Step 2: Extract the zip at any location of your choice
 - To activate auto-launch continue else skip to Step 7
 - Step 3: Right click `searchlight_gui.exe` the show more options(only on Windows 11)
@@ -29,16 +29,16 @@ searchlight is the solution
 <details>
 <summary>Ubuntu</summary>
 <br>
-  
-- Step 1: Download the binary tarball for linux [zip](https://github.com/Betaco-Open/searchlight/releases/download/v0.1.0/release.zip) 
+
+- Step 1: Download the binary tarball for linux [zip](https://github.com/Betaco-Open/searchlight/releases/download/v0.1.0/release.zip)
 - Step 2: Extract the zip at any location of your choice
 - Step 3: Open Settings > Keyboard > Custom Shortcut
 - Step 4: Press Create Shortcut
-- Step 5: In command type '$EXTRACTED_ZIP_LOCATION\searchlight_gui'  
+- Step 5: In command type '$EXTRACTED_ZIP_LOCATION\searchlight_gui'
 - Step 6: Then configure your Shortcut e.g.Alt+Q for opening Searchlight and Save Settings.
 - Step 7: Now press `Alt+Q`/<your shortcut> and start Searchlight App
 - Step 8: To exit press `Alt+Z`
-  
+
 </details>
 
 ## What is current developent status?
@@ -47,7 +47,7 @@ Searchlight Public Alpha Release v0.1.1 is Out <br>
 Try it: <br>
 - Windows(x64) : [Download Here](https://github.com/Betaco-Open/searchlight/releases/download/v0.1.1/searchlight_gui-windows-x64.tar.xz)  <br>
 - Linux(x64) : [Download Here](https://github.com/Betaco-Open/searchlight/releases/download/v0.1.1/searchlight_gui-linux-x64.tar.xz) <br>
-
+- Macos(arm64) : [WIP](https://github.com/Betaco-Open/searchlight/tree/macos)
 
 Send your queries to :
 <br>
@@ -69,7 +69,7 @@ Features:
 - Commands, Keywords and Keyboard Shortcuts
 
   <br>
-  
+
 Additional Features include:
 - Support for Alfred and Raycast Plugins
 - SDK for App Developers
@@ -93,7 +93,3 @@ From now on most probably weekly dev builds with features would be supported.
 - Auto Start on Boot
 - Control Device Settings from inside the App
 - Support for Spotlight DB
-
-
-
-
